@@ -21,7 +21,7 @@ public class HelloMysqlTest extends DBTestCase {
     public HelloMysqlTest(String name) {
         super(name);
         System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_DRIVER_CLASS, "com.mysql.jdbc.Driver");
-        System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_CONNECTION_URL, "jdbc:mysql://localhost:3306/hello_mysql_junit");
+        System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_CONNECTION_URL, "jdbc:mysql://localhost:3306/hello_mysql_junit?createDatabaseIfNotExist=true&amp;useSSL=false");
         System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_USERNAME, "root");
         System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_PASSWORD, "pristijpriborF1539249f");
     }
