@@ -3,10 +3,12 @@ package by.pvt.service;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
@@ -14,13 +16,13 @@ import by.pvt.dao.SystemUsersMapper;
 import by.pvt.dto.SystemUsers;
 
 
-public class SystemUsersService {
+ public class SystemUserService {
 
-    private static Logger log = Logger.getLogger(SystemUsersService.class.getName());
+    private static Logger log = Logger.getLogger(SystemUserService.class.getName());
 
     private SqlSessionFactory sqlSessionFactory;
 
-    public SystemUsersService() {
+    public SystemUserService() {
         try {
             sqlSessionFactory = new SqlSessionFactoryBuilder().build(
                     Resources.getResourceAsStream("by/pvt/service/mybatis-config.xml")
@@ -30,16 +32,20 @@ public class SystemUsersService {
         }
     }
 
-    public static void main(String[] args) {
+     protected void setSqlSessionFactory(SqlSessionFactory sqlSessionFactory) {
+         this.sqlSessionFactory = sqlSessionFactory;
+     }
+
+     public static void main(String[] args) {
         SystemUsers systemUsers = new SystemUsers();
         systemUsers.setId(2);
         systemUsers.setUsername("User2");
         systemUsers.setActive(false);
         systemUsers.setDateofbirth(new Date());
 
-        new SystemUsersService().add(systemUsers);
+        new SystemUserService().add(systemUsers);
 
-        new SystemUsersService()
+        new SystemUserService()
                 .getSystemUsers()
                 .forEach(user ->
                         log.info(user.getId() + " "
@@ -55,11 +61,47 @@ public class SystemUsersService {
     }
 
     public void add(SystemUsers systemUser) {
-        int result = sqlSessionFactory
-                .openSession()
-                .getMapper(SystemUsersMapper.class)
-                .insert(systemUser);
+        SqlSession session = sqlSessionFactory.openSession();
+        SystemUsersMapper dao = session.getMapper(SystemUsersMapper.class);
+         int result = sqlSessionFactory
+                 .openSession()
+                 .getMapper(SystemUsersMapper.class)
+                 .insert(systemUser);
 
-        log.info("Added new systemUser with result=" + result);
-    }
-}
+         log.info("Added new systemUser with result=" + result);
+
+        session.commit();
+        session.close();
+     }
+
+     public void  addAll(List<SystemUserService> systemUsers) {
+
+         if (systemUsers == null) {
+             log.info("The input ...");
+             return;
+         }
+
+         SqlSession session = sqlSessionFactory.openSession();
+         SystemUsersMapper dao = session.getMapper(SystemUsersMapper.class);
+         try {
+             systemUsers.stream()
+                     .filter(Objects::nonNull);
+                     .forEach(dao::insert);
+             session.commit();
+         } catch (Exception e) {
+             e.printStackTrace();
+             session.rollback();
+         } finally {
+             session.close();
+         }
+
+
+            systemUsers.forEach(dao::insert);
+            session.commit();
+            session.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+     }
+
+
