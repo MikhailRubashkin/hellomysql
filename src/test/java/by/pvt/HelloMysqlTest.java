@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.Date;
 
 import by.pvt.dto.SystemUsers;
-import by.pvt.service.SystemUserService;
+//import by.pvt.service.SystemUsersService;
 import org.dbunit.DBTestCase;
 import org.dbunit.PropertiesBasedJdbcDatabaseTester;
 import org.dbunit.dataset.IDataSet;
@@ -19,7 +19,7 @@ import org.junit.*;
 
 
 public class HelloMysqlTest extends DBTestCase {
-    private SystemUsers systemUsers;
+
 
     public HelloMysqlTest(String name) {
 
@@ -61,7 +61,7 @@ public class HelloMysqlTest extends DBTestCase {
                 if (rs.getBoolean("active")) activeUser++;
             }
             assertEquals(4, rawCount);
-            assertEquals(3, activeUser);
+            assertEquals(2, activeUser);
 
             rs.close();
         } catch (SQLException e) {
