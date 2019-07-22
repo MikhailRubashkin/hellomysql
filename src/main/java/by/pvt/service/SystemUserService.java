@@ -1,27 +1,26 @@
 package by.pvt.service;
 
+import by.pvt.dao.SystemUsersMapper;
+import by.pvt.dto.SystemUsers;
+import org.apache.ibatis.io.Resources;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apache.ibatis.io.Resources;
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
-import by.pvt.dao.SystemUsersMapper;
-import by.pvt.dto.SystemUsers;
+public class SystemUserService {
 
-
-class SystemUsersService {
-
-    private static Logger log = Logger.getLogger(SystemUsersService.class.getName());
+    private static Logger log = Logger.getLogger(SystemUserService.class.getName());
 
     private SqlSessionFactory sqlSessionFactory;
 
-    public SystemUsersService() {
+    public SystemUserService() {
         try {
             sqlSessionFactory = new SqlSessionFactoryBuilder().build(
                     Resources.getResourceAsStream("by/pvt/service/mybatis-config.xml")
@@ -81,5 +80,33 @@ class SystemUsersService {
             session.close();
         }
     }
+    public void update(SystemUsers systemUser) {
+        SqlSession session = sqlSessionFactory.openSession();
+        session.getMapper(SystemUsersMapper.class)
+                .updateByPrimaryKey(systemUser);
 
+        session.commit();
+        session.close();
+        log.info("Updated systemUser with id = " + systemUser.getId());
+
+    }
+    public void delete(int id) {
+        SqlSession session = sqlSessionFactory.openSession();
+        session.getMapper(SystemUsersMapper.class)
+                .deleteByPrimaryKey(id);
+
+        session.commit();
+        session.close();
+        log.info("Deleted systemUser with id = " + id);
+    }
+
+    public void insert(SystemUsers record) {
+        SqlSession session = sqlSessionFactory.openSession();
+        session.getMapper(SystemUsersMapper.class)
+                .insert(record);
+
+        session.commit();
+        session.close();
+        log.info("Insert systemUser with record = " + record);
+    }
 }

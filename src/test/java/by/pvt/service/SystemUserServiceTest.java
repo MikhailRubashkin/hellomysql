@@ -13,12 +13,10 @@ import org.junit.*;
 import by.pvt.HelloMysqlTest;
 import by.pvt.dto.SystemUsers;
 
-/**
- * @author alve
- */
+
 public class SystemUserServiceTest extends DBTestCase {
 
-    SystemUsersService objUnderTest;
+    SystemUserService objUnderTest;
 
     public SystemUserServiceTest(String name) {
         super(name);
@@ -47,7 +45,7 @@ public class SystemUserServiceTest extends DBTestCase {
     @Test
     public void testGetSystemUsers() throws Exception {
         // given
-        objUnderTest = new SystemUsersService();
+        objUnderTest = new SystemUserService();
         objUnderTest.setSqlSessionFactory(
                 new SqlSessionFactoryBuilder().build(
                         Resources.getResourceAsStream("by/pvt/service/mybatis-config-junit.xml")
@@ -82,6 +80,5 @@ public class SystemUserServiceTest extends DBTestCase {
         // then
         //assertEquals(true, false);
     }
-
-
 }
+
