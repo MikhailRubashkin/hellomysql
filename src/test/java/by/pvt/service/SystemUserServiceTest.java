@@ -2,6 +2,7 @@ package by.pvt.service;
 
 import java.util.List;
 
+import by.pvt.dto.SystemUsersExample;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.dbunit.DBTestCase;
@@ -57,6 +58,11 @@ public class SystemUserServiceTest extends DBTestCase {
 
         // then
         assertEquals(4, list.size());
+        SystemUsersExample systemUsersExample = new SystemUsersExample();
+        systemUsersExample.createCriteria().andActiveEqualTo(true);
+        List<SystemUsers> list2 =  objUnderTest.getSystemUsers(systemUsersExample);
+
+        assertEquals(2, list2.size());
     }
 
     @Test

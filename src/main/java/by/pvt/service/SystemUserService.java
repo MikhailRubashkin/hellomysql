@@ -2,6 +2,7 @@ package by.pvt.service;
 
 import by.pvt.dao.SystemUsersMapper;
 import by.pvt.dto.SystemUsers;
+import by.pvt.dto.SystemUsersExample;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -41,6 +42,18 @@ public class SystemUserService {
 
         List<SystemUsers> dtoUsers
                 = dao.selectByExample(null);
+
+        session.close();
+        return dtoUsers;
+    }
+
+    public List<SystemUsers> getSystemUsers(SystemUsersExample example) {
+        SqlSession session = sqlSessionFactory.openSession();
+        SystemUsersMapper dao =
+                session.getMapper(SystemUsersMapper.class);
+
+        List<SystemUsers> dtoUsers
+                = dao.selectByExample(example);
 
         session.close();
         return dtoUsers;
@@ -109,4 +122,6 @@ public class SystemUserService {
         session.close();
         log.info("Insert systemUser with record = " + record);
     }
+
+
 }
