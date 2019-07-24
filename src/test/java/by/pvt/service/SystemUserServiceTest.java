@@ -59,10 +59,10 @@ public class SystemUserServiceTest extends DBTestCase {
         // then
         assertEquals(4, list.size());
         SystemUsersExample systemUsersExample = new SystemUsersExample();
-        systemUsersExample.createCriteria().andActiveEqualTo(true);
+        systemUsersExample.createCriteria().andActiveEqualTo(true).andUsernameLike("guest3");
         List<SystemUsers> list2 =  objUnderTest.getSystemUsers(systemUsersExample);
 
-        assertEquals(2, list2.size());
+        assertEquals(1, list2.size());
     }
 
     @Test

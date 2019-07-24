@@ -121,7 +121,7 @@ public class HelloMysqlTest extends DBTestCase {
             while (rs.next()) {
                 rowCount++;
             }
-            assertEquals(8, rowCount);
+            assertEquals(9, rowCount);
 
             SystemUsers systemUser = new SystemUsers();
             Assert.assertNotNull(systemUser);
@@ -141,13 +141,13 @@ public class HelloMysqlTest extends DBTestCase {
                         "root", "pristijpriborF1539249f")){
 
             SystemUsers systemUser = new SystemUsers();
-            systemUser.setId(12);
+            systemUser.setId(13);
             systemUser.setUsername("Test-Insert");
             systemUser.setActive(false);
             new SystemUserService().insert(systemUser);
 
             PreparedStatement ps = connection.prepareStatement
-                    ("select * from system_users where id=12");
+                    ("select * from system_users where id=13");
             ResultSet rs = ps.executeQuery();
 
             int id = 0;
@@ -159,7 +159,7 @@ public class HelloMysqlTest extends DBTestCase {
                 active = rs.getBoolean("active");
             }
             assertNotNull(systemUser);
-            assertEquals(12, id);
+            assertEquals(13, id);
             assertEquals("Test-Insert", username);
             assertEquals(false, active);
 
